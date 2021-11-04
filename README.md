@@ -12,6 +12,12 @@ libraryDependencies ++= Seq(
 
 For now docs are [here](docs/src/main/mdoc/docs/main.md), we'll have a site in the upcoming future.
 
+## Version compatibility
+
+| This library | Doobie    | Quill |
+| ------------ | --------- | ----- |
+| 0.0.1        | 1.0.0-RC1 | 3.8.0 |
+
 ## Migrating from original integration
 
 1. Replace the dependency
