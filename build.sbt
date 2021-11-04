@@ -68,10 +68,11 @@ ThisBuild / githubWorkflowPublish := Seq(
 val root = project
   .in(file("."))
   .settings(
+    name := "doobie-quill",
     libraryDependencies ++= Seq(
       "io.getquill" %% "quill-jdbc" % "3.8.0",
       "org.tpolecat" %% "doobie-core" % "1.0.0-RC1",
       "org.tpolecat" %% "doobie-postgres" % "1.0.0-RC1" % Test,
       "org.scalameta" %% "munit" % "0.7.29" % Test,
-    ) ++ compilerPlugins
+    ) ++ compilerPlugins,
   )
