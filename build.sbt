@@ -39,6 +39,13 @@ ThisBuild / githubWorkflowBuildPreamble ++= Seq(
     )
   )
 )
+ThisBuild / githubWorkflowBuildPostamble ++= Seq(
+  WorkflowStep.Run(
+    List(
+      "docker-compose down"
+    )
+  )
+)
 ThisBuild / githubWorkflowPublish := Seq(
   WorkflowStep.Sbt(
     List("ci-release"),
