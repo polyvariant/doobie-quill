@@ -17,3 +17,9 @@ For now docs are [here](docs/src/main/mdoc/docs/main.md), we'll have a site in t
 1. Replace the dependency
 2. Replace imports: `doobie.quill` -> `org.polyvariant.doobiequill`
 3. Test your code :)
+
+## Community
+
+This project supports the [Scala code of conduct](https://www.scala-lang.org/conduct/) and wants communication on all its channels (GitHub etc.) to be inclusive environments.
+
+If you have any concerns about someone's behavior on these channels, contact [Jakub Kozłowski](mailto:kubukoz@gmail.com).
