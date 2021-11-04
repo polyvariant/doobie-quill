@@ -49,6 +49,14 @@ jobs:
             ~/Library/Caches/Coursier/v1
           key: ${{ runner.os }}-sbt-cache-v2-${{ hashFiles('**/*.sbt') }}-${{ hashFiles('project/build.properties') }}
 
+      - env:
+          POSTGRES_DB: world
+        uses: docker://mdillon/postgis:11
+
+      - run: |
+          pg_isready || sleep 5 && pg_isready
+          psql -U postgres -h localhost < init/test-db.sql
+
       - name: Check that workflows are up to date
         run: sbt ++${{ matrix.scala }} githubWorkflowCheck
 

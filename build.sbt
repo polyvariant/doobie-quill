@@ -28,8 +28,19 @@ val compilerPlugins = List(
 ThisBuild / scalaVersion := Scala213
 ThisBuild / crossScalaVersions := Seq(Scala212, Scala213)
 
+Global / onChangedBuildSource := ReloadOnSourceChanges
+
 ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
 ThisBuild / githubWorkflowPublishTargetBranches += RefPredicate.StartsWith(Ref.Tag("v"))
+ThisBuild / githubWorkflowBuildPreamble ++= Seq(
+  WorkflowStep.Use(UseRef.Docker("mdillon/postgis", "11"), env = Map("POSTGRES_DB" -> "world")),
+  WorkflowStep.Run(
+    List(
+      "pg_isready || sleep 5 && pg_isready",
+      "psql -U postgres -h localhost < init/test-db.sql",
+    )
+  ),
+)
 ThisBuild / githubWorkflowPublish := Seq(
   WorkflowStep.Sbt(
     List("ci-release"),
