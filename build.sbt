@@ -25,6 +25,8 @@ val compilerPlugins = List(
   crossPlugin("org.polyvariant" % "better-tostring" % "0.3.11"),
 )
 
+ThisBuild / versionScheme := Some("early-semver")
+
 ThisBuild / scalaVersion := Scala213
 ThisBuild / crossScalaVersions := Seq(Scala212, Scala213)
 
