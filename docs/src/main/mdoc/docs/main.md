@@ -14,7 +14,7 @@ The examples below require the following imports.
 
 ```scala mdoc:silent
 import io.getquill.{ idiom => _, _ }
-import doobie.quill.DoobieContext
+import org.polyvariant.doobiequill.DoobieContext
 ```
 
 We can now construct a `DoobieContext` for our back-end database and import its members, as we would with a traditional Quill context. The options are `H2`, `MySQL`, `Oracle`, `Postgres`, `SQLite`, and `SQLServer`.

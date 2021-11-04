@@ -1,4 +1,4 @@
-package doobie.quill
+package org.polyvariant.doobiequill
 package issue
 
 import cats.effect._
@@ -14,7 +14,8 @@ class `1067` extends munit.FunSuite {
   lazy val xa = Transactor.fromDriverManager[IO](
     "org.postgresql.Driver",
     "jdbc:postgresql:world",
-    "postgres", ""
+    "postgres",
+    "",
   )
 
   val dc = new DoobieContext.Postgres(Literal)
@@ -23,8 +24,8 @@ class `1067` extends munit.FunSuite {
   case class Country(name: String, indepYear: Option[Short])
 
   test("Issue1067 - correctly select many countries, with a null in last position") {
-    val stmt     = quote { query[Country] }
-    val actual   = run(stmt).transact(xa).unsafeRunSync()
+    val stmt = quote(query[Country])
+    val actual = run(stmt).transact(xa).unsafeRunSync()
     assertEquals(actual.count(_.indepYear.isDefined), 192)
     assertEquals(actual.count(_.indepYear.isEmpty), 47)
   }
