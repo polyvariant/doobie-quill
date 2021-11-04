@@ -33,11 +33,16 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 ThisBuild / githubWorkflowTargetTags ++= Seq("v*")
 ThisBuild / githubWorkflowPublishTargetBranches += RefPredicate.StartsWith(Ref.Tag("v"))
 ThisBuild / githubWorkflowBuildPreamble ++= Seq(
-  WorkflowStep.Use(UseRef.Docker("mdillon/postgis", "11"), env = Map("POSTGRES_DB" -> "world")),
+  WorkflowStep.Use(
+    UseRef.Docker("mdillon/postgis", "11"),
+    env = Map("POSTGRES_DB" -> "world"),
+    params = Map(
+      "options" -> "--health-cmd pg_isready\n--health-interval 10s\n--health-timeout 1s\n--health-retries 5"
+    ),
+  ),
   WorkflowStep.Run(
     List(
-      "pg_isready || sleep 5 && pg_isready",
-      "psql -U postgres -h localhost < init/test-db.sql",
+      "psql -U postgres -h localhost < init/test-db.sql"
     )
   ),
 )

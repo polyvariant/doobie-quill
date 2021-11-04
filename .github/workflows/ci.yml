@@ -52,10 +52,14 @@ jobs:
       - env:
           POSTGRES_DB: world
         uses: docker://mdillon/postgis:11
+        with:
+          options: |
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 1s
+            --health-retries 5
 
-      - run: |
-          pg_isready || sleep 5 && pg_isready
-          psql -U postgres -h localhost < init/test-db.sql
+      - run: psql -U postgres -h localhost < init/test-db.sql
 
       - name: Check that workflows are up to date
         run: sbt ++${{ matrix.scala }} githubWorkflowCheck
