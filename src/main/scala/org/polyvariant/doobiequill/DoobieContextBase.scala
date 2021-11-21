@@ -96,11 +96,15 @@ trait DoobieContextBase[Dialect <: SqlIdiom, Naming <: NamingStrategy]
     info: ExecutionInfo,
     dc: DatasourceContext,
   ): Stream[ConnectionIO, A] =
-    HC.stream(
-      sql,
-      useConnection(implicit connection => prepareAndLog(sql, prepare)),
-      fetchSize.getOrElse(DefaultChunkSize),
-    )(extractorToRead(extractor)(null))
+    for {
+      connection <- Stream.eval(FC.raw(identity))
+      result <-
+        HC.stream(
+          sql,
+          prepareAndLog(sql, prepare)(connection),
+          fetchSize.getOrElse(DefaultChunkSize),
+        )(extractorToRead(extractor)(connection))
+    } yield result
 
   override def executeAction[A](
     sql: String,
