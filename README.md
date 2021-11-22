@@ -14,10 +14,10 @@ For now docs are [here](docs/src/main/mdoc/docs/main.md), we'll have a site in t
 
 ## Version compatibility
 
-| This library | Doobie    | Quill  | ZIO   |
-| ------------ | --------- | ------ | ----- |
-| 0.0.1        | 1.0.0-RC1 | 3.8.0  | N/A   |
-| 0.0.2        | 1.0.0-RC1 | 3.11.0 | 1.0.12|
+| This library | Doobie    | Quill  |
+| ------------ | --------- | ------ |
+| 0.0.1        | 1.0.0-RC1 | 3.8.0  |
+| 0.0.2        | 1.0.0-RC1 | 3.11.0 |
 
 ## Migrating from original integration
 
