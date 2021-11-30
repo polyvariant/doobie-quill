@@ -75,5 +75,5 @@ val root = project
       "org.tpolecat" %% "doobie-postgres" % "1.0.0-RC1" % Test,
       "org.scalameta" %% "munit" % "0.7.29" % Test,
     ) ++ compilerPlugins,
-    Test / fork := true
+    Test / fork := true,
   )
