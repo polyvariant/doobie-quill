@@ -2,6 +2,8 @@ package org.polyvariant.doobiequill
 
 import cats.data.Nested
 import cats.syntax.all._
+import cats.free.Free
+import doobie.free.connection.ConnectionOp
 import doobie._
 import doobie.implicits._
 import doobie.util.query.DefaultChunkSize
@@ -58,7 +60,7 @@ trait DoobieContextBase[Dialect <: SqlIdiom, Naming <: NamingStrategy]
     extractor: Extractor[A] = identityExtractor,
   )(
     info: ExecutionInfo,
-    dc: DatasourceContext,
+    dc: Runner
   ): ConnectionIO[List[A]] =
     HC.prepareStatement(sql) {
       useConnection { implicit connection =>
@@ -75,7 +77,7 @@ trait DoobieContextBase[Dialect <: SqlIdiom, Naming <: NamingStrategy]
     extractor: Extractor[A] = identityExtractor,
   )(
     info: ExecutionInfo,
-    dc: DatasourceContext,
+    dc: Runner
   ): ConnectionIO[A] =
     HC.prepareStatement(sql) {
       useConnection { implicit connection =>
@@ -94,7 +96,7 @@ trait DoobieContextBase[Dialect <: SqlIdiom, Naming <: NamingStrategy]
     extractor: Extractor[A] = identityExtractor,
   )(
     info: ExecutionInfo,
-    dc: DatasourceContext,
+    dc: Runner
   ): Stream[ConnectionIO, A] =
     for {
       connection <- Stream.eval(FC.raw(identity))
@@ -106,13 +108,10 @@ trait DoobieContextBase[Dialect <: SqlIdiom, Naming <: NamingStrategy]
         )(extractorToRead(extractor)(connection))
     } yield result
 
-  override def executeAction[A](
+  override def executeAction(
     sql: String,
     prepare: Prepare = identityPrepare,
-  )(
-    info: ExecutionInfo,
-    dc: DatasourceContext,
-  ): ConnectionIO[Long] =
+)(info: ExecutionInfo,  dc: Runner): ConnectionIO[Long] =
     HC.prepareStatement(sql) {
       useConnection { implicit connection =>
         prepareAndLog(sql, prepare) *>
@@ -135,7 +134,7 @@ trait DoobieContextBase[Dialect <: SqlIdiom, Naming <: NamingStrategy]
     returningBehavior: ReturnAction,
   )(
     info: ExecutionInfo,
-    dc: DatasourceContext,
+    dc: Runner,
   ): ConnectionIO[A] =
     prepareConnections[A](returningBehavior)(sql) {
       useConnection { implicit connection =>
@@ -159,7 +158,7 @@ trait DoobieContextBase[Dialect <: SqlIdiom, Naming <: NamingStrategy]
     groups: List[BatchGroup]
   )(
     info: ExecutionInfo,
-    dc: DatasourceContext,
+    dc: Runner
   ): ConnectionIO[List[Long]] = groups.flatTraverse { case BatchGroup(sql, preps) =>
     HC.prepareStatement(sql) {
       useConnection { implicit connection =>
@@ -175,7 +174,7 @@ trait DoobieContextBase[Dialect <: SqlIdiom, Naming <: NamingStrategy]
     extractor: Extractor[A],
   )(
     info: ExecutionInfo,
-    dc: DatasourceContext,
+    dc: Runner
   ): ConnectionIO[List[A]] = groups.flatTraverse {
     case BatchGroupReturning(sql, returningBehavior, preps) =>
       prepareConnections(returningBehavior)(sql) {
@@ -206,4 +205,8 @@ trait DoobieContextBase[Dialect <: SqlIdiom, Naming <: NamingStrategy]
   override protected def withConnection[A](f: Connection => ConnectionIO[A]): ConnectionIO[A] = ???
 
   protected val effect = null
+
+  def wrap[T](t: => T): Free[ConnectionOp, T] = Free.pure(t)
+  def push[A, B](result: Free[ConnectionOp, A])(f: A => B): Free[ConnectionOp, B] = result.map(f(_))
+  def seq[A](list: List[Free[ConnectionOp, A]]): Free[ConnectionOp, List[A]] = list.sequence
 }
