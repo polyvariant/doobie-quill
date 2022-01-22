@@ -24,7 +24,7 @@ def crossPlugin(x: sbt.librarymanagement.ModuleID) = compilerPlugin(x.cross(Cros
 
 val compilerPlugins = List(
   crossPlugin("org.typelevel" % "kind-projector" % "0.13.2"),
-  crossPlugin("org.polyvariant" % "better-tostring" % "0.3.13"),
+  crossPlugin("org.polyvariant" % "better-tostring" % "0.3.14"),
 )
 
 ThisBuild / versionScheme := Some("early-semver")
