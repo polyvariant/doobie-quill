@@ -60,7 +60,7 @@ trait DoobieContextBase[Dialect <: SqlIdiom, Naming <: NamingStrategy]
     extractor: Extractor[A] = identityExtractor,
   )(
     info: ExecutionInfo,
-    dc: Runner
+    dc: Runner,
   ): ConnectionIO[List[A]] =
     HC.prepareStatement(sql) {
       useConnection { implicit connection =>
@@ -77,7 +77,7 @@ trait DoobieContextBase[Dialect <: SqlIdiom, Naming <: NamingStrategy]
     extractor: Extractor[A] = identityExtractor,
   )(
     info: ExecutionInfo,
-    dc: Runner
+    dc: Runner,
   ): ConnectionIO[A] =
     HC.prepareStatement(sql) {
       useConnection { implicit connection =>
@@ -96,7 +96,7 @@ trait DoobieContextBase[Dialect <: SqlIdiom, Naming <: NamingStrategy]
     extractor: Extractor[A] = identityExtractor,
   )(
     info: ExecutionInfo,
-    dc: Runner
+    dc: Runner,
   ): Stream[ConnectionIO, A] =
     for {
       connection <- Stream.eval(FC.raw(identity))
@@ -111,7 +111,10 @@ trait DoobieContextBase[Dialect <: SqlIdiom, Naming <: NamingStrategy]
   override def executeAction(
     sql: String,
     prepare: Prepare = identityPrepare,
-)(info: ExecutionInfo,  dc: Runner): ConnectionIO[Long] =
+  )(
+    info: ExecutionInfo,
+    dc: Runner,
+  ): ConnectionIO[Long] =
     HC.prepareStatement(sql) {
       useConnection { implicit connection =>
         prepareAndLog(sql, prepare) *>
@@ -158,7 +161,7 @@ trait DoobieContextBase[Dialect <: SqlIdiom, Naming <: NamingStrategy]
     groups: List[BatchGroup]
   )(
     info: ExecutionInfo,
-    dc: Runner
+    dc: Runner,
   ): ConnectionIO[List[Long]] = groups.flatTraverse { case BatchGroup(sql, preps) =>
     HC.prepareStatement(sql) {
       useConnection { implicit connection =>
@@ -174,7 +177,7 @@ trait DoobieContextBase[Dialect <: SqlIdiom, Naming <: NamingStrategy]
     extractor: Extractor[A],
   )(
     info: ExecutionInfo,
-    dc: Runner
+    dc: Runner,
   ): ConnectionIO[List[A]] = groups.flatTraverse {
     case BatchGroupReturning(sql, returningBehavior, preps) =>
       prepareConnections(returningBehavior)(sql) {
