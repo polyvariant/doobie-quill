@@ -16,9 +16,10 @@ For now docs are [here](docs/src/main/mdoc/docs/main.md), we'll have a site in t
 
 | This library | Doobie    | Quill  |
 | ------------ | --------- | ------ |
-| 0.0.3        | 1.0.0-RC2 | 3.12.0 |
-| 0.0.2        | 1.0.0-RC1 | 3.11.0 |
-| 0.0.1        | 1.0.0-RC1 | 3.8.0  |
+| 0.0.4        | 1.0.0-RC1 | 3.14.x |
+| 0.0.3        | 1.0.0-RC1 | 3.12.x |
+| 0.0.2        | 1.0.0-RC1 | 3.11.x |
+| 0.0.1        | 1.0.0-RC1 | 3.8.x  |
 
 ## Migrating from original integration
 
