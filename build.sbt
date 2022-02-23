@@ -71,8 +71,8 @@ val root = project
     name := "doobie-quill",
     libraryDependencies ++= Seq(
       "io.getquill" %% "quill-jdbc" % "3.14.1",
-      "org.tpolecat" %% "doobie-core" % "1.0.0-RC1",
-      "org.tpolecat" %% "doobie-postgres" % "1.0.0-RC1" % Test,
+      "org.tpolecat" %% "doobie-core" % "1.0.0-RC2",
+      "org.tpolecat" %% "doobie-postgres" % "1.0.0-RC2" % Test,
       "org.scalameta" %% "munit" % "0.7.29" % Test,
     ) ++ compilerPlugins,
     Test / fork := true,
