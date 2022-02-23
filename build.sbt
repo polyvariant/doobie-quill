@@ -70,7 +70,7 @@ val root = project
   .settings(
     name := "doobie-quill",
     libraryDependencies ++= Seq(
-      "io.getquill" %% "quill-jdbc" % "3.14.1",
+      "io.getquill" %% "quill-jdbc" % "3.16.3",
       "org.tpolecat" %% "doobie-core" % "1.0.0-RC2",
       "org.tpolecat" %% "doobie-postgres" % "1.0.0-RC2" % Test,
       "org.scalameta" %% "munit" % "0.7.29" % Test,
