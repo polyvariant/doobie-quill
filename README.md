@@ -1,4 +1,8 @@
-# doobie-quill
+# ARCHIVED
+
+Use the [official Quill integration for Doobie](https://getquill.io/#contexts-quill-doobie) instead.
+
+## doobie-quill
 
 The integration for [Doobie](https://tpolecat.github.io/doobie) and [Quill](https://getquill.io). Originally implemented in Doobie.
 
